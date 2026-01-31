@@ -1,0 +1,18 @@
+# Environment files
+.env
+
+# Binary output
+bin/
+
+# IDE
+.idea/
+.vscode/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out

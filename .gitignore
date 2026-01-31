@@ -1,5 +1,18 @@
-# Implementation guide
+# Environment files (contain secrets)
+.env
+backend/.env
+
+# Implementation guide (reference only)
 docs/implementation-guide/
 
 # Claude Code configuration
 CLAUDE.md
+
+# OS files
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

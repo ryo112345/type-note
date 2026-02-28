@@ -1,0 +1,21 @@
+{
+  "name": "@type-note/api-schema",
+  "version": "1.0.0",
+  "description": "TypeSpec-based API schema for Type Note",
+  "scripts": {
+    "generate": "./scripts/generate-openapi.sh"
+  },
+  "devDependencies": {
+    "@typespec/compiler": "^0.60.0",
+    "@typespec/http": "^0.60.0",
+    "@typespec/openapi3": "^0.60.0"
+  },
+  "keywords": [
+    "typespec",
+    "openapi",
+    "api",
+    "schema"
+  ],
+  "author": "Type Note Team",
+  "license": "MIT"
+}

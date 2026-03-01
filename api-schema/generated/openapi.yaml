@@ -1,0 +1,283 @@
+openapi: 3.0.0
+info:
+  title: Type Note API
+  version: 0.0.0
+tags:
+  - name: Accounts
+paths:
+  /api/accounts/auth:
+    post:
+      operationId: Accounts_createOrGetAccount
+      summary: Create or get account via OAuth
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models.AccountResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models.BadRequestError'
+      tags:
+        - Accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Models.CreateOrGetAccountRequest'
+  /api/accounts/by-email:
+    get:
+      operationId: Accounts_getAccountByEmail
+      summary: Get account by email
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models.AccountResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/Models.NotFoundError'
+                  - $ref: '#/components/schemas/Models.UnauthorizedError'
+      tags:
+        - Accounts
+  /api/accounts/me:
+    get:
+      operationId: Accounts_getCurrentAccount
+      summary: Get current account
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models.AccountResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models.UnauthorizedError'
+      tags:
+        - Accounts
+  /api/accounts/{accountId}:
+    get:
+      operationId: Accounts_getAccountById
+      summary: Get account by ID
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models.AccountResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/Models.NotFoundError'
+                  - $ref: '#/components/schemas/Models.UnauthorizedError'
+      tags:
+        - Accounts
+components:
+  schemas:
+    Models.Account:
+      type: object
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - fullName
+        - lastLoginAt
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        fullName:
+          type: string
+        thumbnail:
+          type: string
+        lastLoginAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Models.AccountResponse:
+      type: object
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - fullName
+        - lastLoginAt
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        fullName:
+          type: string
+        thumbnail:
+          type: string
+        lastLoginAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Models.AccountSummary:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        thumbnail:
+          type: string
+    Models.BadRequestError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - BAD_REQUEST
+        message:
+          type: string
+        details: {}
+    Models.CreateOrGetAccountRequest:
+      type: object
+      required:
+        - email
+        - firstName
+        - lastName
+        - provider
+        - providerAccountId
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        provider:
+          type: string
+        providerAccountId:
+          type: string
+        thumbnail:
+          type: string
+    Models.ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details: {}
+    Models.ForbiddenError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - FORBIDDEN
+        message:
+          type: string
+    Models.NotFoundError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - NOT_FOUND
+        message:
+          type: string
+    Models.SuccessResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+    Models.UnauthorizedError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - UNAUTHORIZED
+        message:
+          type: string
+servers:
+  - url: http://localhost:8080
+    description: Development server
+    variables: {}
